@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./styles.css">
+
+  <title>YardSale: tienda online de cositas chidas</title>
+</head>
+<body>
+  <nav>
+    <img src="./icons/icon_menu.svg" alt="menu" class="menu">
+
+    <div class="navbar-left">
+      <img src="./logos/logo_yard_sale.svg" alt="logo" class="logo">
+
+      <div>
+        <ul>
+          <li>
+            <a data-category-id="All">All</a>
+          </li>
+          <li>
+            <a data-category-id="Clothes">Clothes</a>
+          </li>
+          <li>
+            <a data-category-id="Electronics">Electronics</a>
+          </li>
+          <li>
+            <a data-category-id="Furnitures">Furnitures</a>
+          </li>
+          <li>
+            <a data-category-id="Appliances">Appliances</a>
+          </li>
+          <li>
+            <a data-category-id="Others">Others</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="navbar-right">
+      <ul>
+        <li class="navbar-email">platzi@example.com</li>
+        <li class="navbar-shopping-cart">
+          <img src="./icons/icon_shopping_cart.svg" alt="shopping cart">
+          <div>0</div>
+        </li>
+        <li class="info inactive">
+          <img src="./icons/icons8-información.svg" alt="términos">
+        </li>
+      </ul>
+    </div>
+
+    <div class="desktop-menu inactive">
+      <ul>
+        <li>
+          <a class="title-menu" id="myOrders">My orders</a>
+        </li>
+
+        <li>
+          <a id="my-account">My account</a>
+        </li>
+
+        <li>
+          <a id="sign-out">Sign out</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mobile-menu inactive">
+      <ul>
+        <li>
+          <a href="/">CATEGORIES</a>
+        </li>
+        <li>
+          <a href="/">All</a>
+        </li>
+        <li>
+          <a href="/">Clothes</a>
+        </li>
+        <li>
+          <a href="/">Electronics</a>
+        </li>
+        <li>
+          <a href="/">Furnitures</a>
+        </li>
+        <li>
+          <a href="/">Toys</a>
+        </li>
+        <li>
+          <a href="/">Other</a>
+        </li>
+      </ul>
+
+      <ul>
+        <li>
+          <a href="/">My orders</a>
+        </li>
+        <li>
+          <a href="/">My account</a>
+        </li>
+      </ul>
+
+      <ul>
+        <li>
+          <a href="/" class="email">platzi@example.com</a>
+        </li>
+        <li>
+          <a href="/" id="sign-out">Sign out</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <aside class="product-detail-carrito inactive">
+    <div class="title-container">
+      <img src="./icons/flechita.svg" alt="arrow" class="little-arrow">
+      <p class="title">My order</p>
+    </div>
+
+    <div class="car-empty">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/3366/3366062.png" alt="">
+        <p>¡Empieza un carrito de compras!</p>
+        <p>Suma productos y consigue envíos gratis.</p>
+      </div>
+    </div>
+
+    <div class="my-carrito">
+      <div class="container-shoppingCart inactive">
+        <div class="shopping-cart">
+          <figure>
+            <img src="https://images.pexels.com/photos/16790814/pexels-photo-16790814/free-photo-of-hierba-bici-bicicleta-mtb.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+          </figure>
+          <p class="name">Mountain Bike Marlin 6-2022</p>
+
+          <div>
+            <form class="quantity-container">
+              <button type="button" class="buttonMinus">
+                -
+              </button>
+              <span class="inactive span"></span>
+              <input class="quantity" value="1" min="1">
+              <button type="button" class="buttonPlus">
+                +
+              </button>
+            </form>
+            <div>
+              <p>1</p>
+              <p> x </p>
+              <p>$120</p>
+            </div>
+          </div>
+
+          <p class="price">$120</p>
+          <img src="./icons/icon_close.png" alt="close" class="icon-close">
+        </div>
+      </div>
+    </div>
+
+    <div class="order">
+      <p>
+        <span>Total</span>
+      </p>
+      <p class="total-price-carrito">$0</p>
+    </div>
+
+    <button class="button-checkout focus">
+      Checkout
+    </button>
+  </aside>
+
+  <aside class="product-detail inactive">
+    <div class="product-detail-close">
+      <img src="./icons/icon_close.png" alt="close">
+    </div>
+    <!-- <img src=${product.image} alt="bike" id="product-image">
+    <div class="product-info">
+      <p>$${product.price}</p>
+      <p>${product.name}</p>
+      <p>${product.description}</p>
+      <button class="primary-button-DetailProduct add-to-cart-button add-to-car" data-product-id=${product.id}>
+        <img src="./icons/bt_add_to_cart.svg" alt="add to cart">
+        Add to cart
+      </button>
+    </div> -->
+  </aside>
+
+  <section class="my-order-complete inactive">
+    <div class="my-order">
+      <div class="my-order-container">
+        <h1 class="title">My order</h1>
+
+        <div class="my-order-content">
+          <div class="container-shopping inactive">
+            <div class="shopping-cart shopping-cart-order">
+              <figure>
+                <img src="https://images.pexels.com/photos/16790814/pexels-photo-16790814/free-photo-of-hierba-bici-bicicleta-mtb.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+              </figure>
+              <p class="name">Mountain Bike Marlin 6-2022</p>
+              <div>
+                <div>
+                  <p>1</p>
+                </div>
+                <div>
+                  <p>1</p>
+                  <p>x</p>
+                  <p>$120</p>
+                </div>
+              </div>
+              <p class="price">$120</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="order-myOrder">
+          <p>
+            <span>08.26.23</span>
+            <span>6 articles</span>
+          </p>
+          <p>$560.00</p>
+        </div>
+
+        <button class="button-buy">
+          Buy
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="my-orders-complete inactive">
+    <div class="my-orders">
+      <div class="my-orders-container">
+        <h1 class="title-orders">My orders</h1>
+
+        <div class="my-orders-content">
+          <div class="orders">
+            <p>
+              <span>03.25.21</span>
+              <span>6 articles</span>
+            </p>
+            <p>$560.00</p>
+            <img src="./icons/flechita.svg" alt="arrow">
+          </div>
+
+          <div class="orders">
+            <p>
+              <span>03.25.21</span>
+              <span>6 articles</span>
+            </p>
+            <p>$560.00</p>
+            <img src="./icons/flechita.svg" alt="arrow">
+          </div>
+
+          <div class="orders">
+            <p>
+              <span>03.25.21</span>
+              <span>6 articles</span>
+            </p>
+            <p>$560.00</p>
+            <img src="./icons/flechita.svg" alt="arrow">
+          </div>
+
+          <div class="orders">
+            <p>
+              <span>03.25.21</span>
+              <span>6 articles</span>
+            </p>
+            <p>$560.00</p>
+            <img src="./icons/flechita.svg" alt="arrow">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="main-container">
+    <div class="container-confirm-added inactive">
+      <div class="confirm-added-toCar">
+        <figure>
+          <img src="./icons/bt_added_to_cart.svg" alt="check">
+        </figure>
+        <p>se ha añadido a tu carrito.</p>
+        <div class="show-carrito">
+          Ver carrito
+        </div>
+      </div>
+    </div>
+
+    <div class="cards-container">
+    </div>
+  </section>
+
+  <section class="container-logIn inactive">
+    <div class="login">
+      <div class="form-container">
+        <img src="./logos/logo_yard_sale.svg" alt="logo" class="logo-logIn">
+
+        <form action="/" class="form">
+          <label for="email" class="label">Email address</label>
+          <input type="text" id="email" placeholder="platzi@example.com" class="input input-email">
+
+          <label for="password" class="label">Password</label>
+          <input type="password" id="password" placeholder="*********" class="input input-password">
+
+          <input type="submit" value="Log in" class="primary-button login-button">
+          <a id="forgot-password">Forgot my password</a>
+        </form>
+
+        <button class="secondary-button signup-button">Sign up</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="container-password inactive">
+    <div class="login">
+      <div class="form-container">
+        <img src="./logos/logo_yard_sale.svg" alt="logo" class="logo-logIn">
+
+        <h1 class="password-title">Create a new password</h1>
+        <p class="subtitle">Enter a new password for you account</p>
+
+        <form action="/" class="form">
+          <label for="password" class="label">Password</label>
+          <input type="password" id="password-actually" placeholder="*********" class="input input-password">
+
+          <label for="new-password" class="label">Password</label>
+          <input type="password" id="new-password" placeholder="*********" class="input input-password">
+
+          <input type="submit" value="Confirm" class="primary-button password-button">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="containerEmailSent inactive">
+    <div class="login">
+      <div class="emailSent-container">
+        <img src="./logos/logo_yard_sale.svg" alt="logo" class="logo-logIn">
+
+        <h1 class="password-title">Email has been sent!</h1>
+        <p class="subtitle">Please check your inbox for instructions on how to reset the password</p>
+
+        <div class="email-image">
+          <img src="./icons/email.svg" alt="email">
+        </div>
+
+        <button class="primary-button emailNewPassword-button">Change Password</button>
+
+        <p class="resend">
+          <span>Didn't receive the email?</span>
+          <a>Resend</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sign-up-container inactive">
+    <div class="login">
+      <div class="form-container">
+        <h1 class="signUp-title">My account</h1>
+
+        <form action="/" class="form">
+          <div>
+            <label for="name" class="label">Name</label>
+            <input type="text" id="name" placeholder="Teff" class="input input-name">
+
+            <label for="email" class="label">Email</label>
+            <input type="text" id="signUp-email" placeholder="platzi@example.com" class="input input-email">
+
+            <label for="password" class="label">Password</label>
+            <input type="password" id="signUp-password" placeholder="************" class="input input-password">
+          </div>
+
+          <input type="submit" value="Create" class="primary-button create-button">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="myAccount-container inactive">
+    <div class="login">
+      <div class="form-container">
+        <h1 class="signUp-title">My account</h1>
+
+        <form action="/" class="form">
+          <div>
+            <label for="name" class="label">Name</label>
+            <p class="value">Camila Yokoo</p>
+
+            <label for="email" class="label">Email</label>
+            <p class="value">camilayokoo@gmail.com</p>
+
+            <label for="password" class="label">Password</label>
+            <p class="value">*********</p>
+          </div>
+
+          <input type="submit" value="Edit" class="secondary-button myAccount-button">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="shadow inactive"></section>
+
+  <script src="./main.js"></script>
+</body>
+</html>
