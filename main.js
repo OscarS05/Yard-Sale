@@ -382,7 +382,7 @@ function checkoutMyOrder(){
         <div>
           <p>1</p>
           <p>x</p>
-          <p>${card.price}</p>
+          <p>${card.priceQuiet}</p>
         </div>
       </div>
       <p>${card.price}</p>
@@ -390,7 +390,7 @@ function checkoutMyOrder(){
 
       myOrderContent.append(shoppingCart);
       i++;
-      total = total + parseFloat(card.quantity * card.price.slice(1));
+      total = total + parseInt(card.quantity * card.priceQuiet.slice(1));
     });
     priceOrder.innerText = `$${total}`;
   }
@@ -407,13 +407,15 @@ function checkoutMyOrder(){
   })
 
   totalArticles.innerText = `${arrayOfArrays.length} articles`;
-  menuCarritoIcon.classList.add('inactive');
 
   const currentDate = new Date();
   const options = { year: 'numeric', month:'numeric', day:'numeric'};
   const formattedDate = currentDate.toLocaleDateString(undefined, options);
 
   dateOrder.textContent = formattedDate;
+
+  menuCarritoIcon.classList.add('inactive');
+  categories.classList.add('inactive');
 }
 
 function myOrders(){
@@ -554,19 +556,25 @@ function addProductsToCar(event){
     quantity: 1,
     id:1
   };
+
+  const price = productCard.querySelector('#priceToAdd').textContent;
   const exits = arrayOfArrays.some(product => product.name === productCardObj.name);
   if(exits){
     const products = arrayOfArrays.map(product => {
       if(product.name === productCardObj.name){
         product.quantity++;
+        productCardObj.priceQuiet = price;
+        console.log(product);
         return product
       } else {
         product.id++;
+        productCardObj.priceQuiet = price;
         return product;
       }
     });
     arrayOfArrays = [...products];
   } else {
+    productCardObj.priceQuiet = price;
     arrayOfArrays = [...arrayOfArrays, productCardObj];
   }
   renderCarrito();
@@ -611,7 +619,6 @@ function addProductsToCar(event){
         }
 
         contadorInput.value = quantity;
-        productCardObj.quantity = quantity;
         price.textContent = total;
         totalPriceCar.innerText = total;
 
@@ -622,6 +629,23 @@ function addProductsToCar(event){
           totalPrice += productPrice;
         })
         totalPriceCar.innerText = `$${totalPrice}`;
+
+        const name = e.target.closest('.shopping-cart').querySelector('p:nth-child(2)').textContent;
+        const exits = arrayOfArrays.some(product => product.name == name);
+        if(exits){
+          const products = arrayOfArrays.map(product => {
+            if(product.name === name){
+              product.quantity = quantity;
+              product.name = name;
+              product.price = price.textContent;
+              product.priceQuiet = priceQuiet;
+              return product
+            } else {
+              return product;
+            }
+          });
+          arrayOfArrays = [...products];
+        }
       }
       if(e.target.classList.contains('buttonMinus')){
         let price = shopping.closest('.shopping-cart').querySelector('p:nth-child(4)');
@@ -648,9 +672,29 @@ function addProductsToCar(event){
           totalPrice += productPrice;
         })
         totalPriceCar.innerText = `$${totalPrice}`;
+
+
+        const name = e.target.closest('.shopping-cart').querySelector('p:nth-child(2)').textContent;
+        const exits = arrayOfArrays.some(product => product.name == name);
+        if(exits){
+          const products = arrayOfArrays.map(product => {
+            if(product.name === name){
+              product.quantity = quantity;
+              product.name = name;
+              product.price = price.textContent;
+              product.priceQuiet = priceQuiet;
+              return product
+            } else {
+              return product;
+            }
+          });
+          arrayOfArrays = [...products];
+        }
       }
     })
   })
+
+  console.log(arrayOfArrays);
 
   myCarrito.addEventListener('click', (e) => {
     if(e.target.classList.contains('icon-close')){
@@ -758,6 +802,8 @@ function filterCategories() {
 }
 filterCategories();
 
+
+// Dinamizar la section myOrdersComplete
 // Crear section, imagen grande, descripción mediana debajo de la imagen, a la derecha de la imagen el nombre grande, el precio grande, botón para comprar de una vez, botón para añadir a carrito, añadir opción para agregar a favoritos(opcional, añadir imagenes de tarjetas disponibles como método de pago), productos disponibles
 // Cuando le de click a x producto que esté en el Carrito, que habra los detalles del producto en una section
 // Código responsivo

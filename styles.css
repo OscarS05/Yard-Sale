@@ -99,6 +99,7 @@
   }
 
 
+
   /* Menu en desktop */
   .desktop-menu {
     position: absolute;
@@ -145,6 +146,7 @@
   .desktop-menu ul li a:focus {
     outline: none;
   }
+
 
 
   /* Log in */
@@ -235,11 +237,11 @@
     display: none;
   }
   .emailSent-container {
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      width: 300px;
-      justify-items: center;
-    }
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 300px;
+    justify-items: center;
+  }
   .email-image {
     width: 132px;
     height: 132px;
@@ -655,8 +657,8 @@
   }
 
 
-  /* My orders */
 
+  /* My orders */
   .my-orders {
     height: 89vh;
     display: grid;
@@ -703,7 +705,6 @@
 
 
   /* Product detail de verdad */
-
   .product-detail {
     width: 360px;
     height: auto;
@@ -882,7 +883,6 @@
 
 
   /* Shadow */
-
   .shadow {
     background-color: rgba(0, 0, 0, 0.4);
     position: fixed;
