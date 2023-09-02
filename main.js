@@ -1,3 +1,5 @@
+const nav = document.querySelector('nav');
+const body = document.querySelector('body');
 const menuEmail = document.querySelector('.navbar-email');
 const menuHamIcon = document.querySelector('.menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
@@ -5,8 +7,7 @@ const productDetailCloseIcon = document.querySelector('.product-detail-close');
 const buttonBuy = document.querySelector('.button-buy');
 const logoLobby = document.querySelector('.logo');
 const myOrdersList = document.querySelector('#myOrders');
-const navbarHeight = document.querySelector('.navbar-left').offsetHeight;
-const navbarLeft = document.querySelector('.navbar-left');
+const categoryListMobile = document.querySelector('.category-list-mobile');
 const littleArrowCarrito = document.querySelector('.little-arrow');
 let totalPriceCar = document.querySelector('.total-price-carrito');
 const confirmAddedToCar = document.querySelector('.container-confirm-added');
@@ -19,8 +20,16 @@ const signIn = document.querySelector('#sign-out');
 const categories = document.querySelector('.navbar-left div');
 const forgotPassword = document.querySelector('#forgot-password');
 const changePasswordButton = document.querySelector('.emailNewPassword-button');
+const newPasswordButton = document.querySelector('.password-button');
 const signUpButton = document.querySelector('.signup-button');
+const loginButton = document.querySelector('.login-button');
 const myAccountMenu = document.querySelector('#my-account');
+const myAccountMobile = document.querySelector('#my-account-mobile');
+const loginMobile = document.querySelector('#log-in-mobile');
+const createAccountButton = document.querySelector('.create-button');
+const myOrdersContent = document.querySelector('.my-orders-content');
+const myPurchasedProducts = document.querySelector('.purchasedProducts');
+const myPurchasedProductsMobile = document.querySelector('.purchased-products-mobile');
 
 
 const myCarrito = document.querySelector('.my-carrito');
@@ -35,6 +44,7 @@ const divContainer = document.createElement('div');
 const shadow = document.querySelector('.shadow');
 const myOrder = document.querySelector('.my-order-complete');
 const containerOrders = document.querySelector('.my-orders-complete');
+const myOrdersMobile = document.querySelector('#myOrdersMobile')
 const quantityContainer = document.querySelector('.quantity-container');
 const carEmpty = document.querySelector('.car-empty');
 const titleCar = document.querySelector('.title-container > p:nth-child(2)');
@@ -48,6 +58,7 @@ const myAccount = document.querySelector('.myAccount-container');
 
 const productList = [];
 let arrayOfArrays = [];
+let purchases = [];
 
 
 productList.push({
@@ -188,11 +199,24 @@ productList.push({
 menuEmail.addEventListener('click', toggleDesktopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
 menuCarritoIcon.addEventListener('click', toggleCarritoAside);
-productDetailCloseIcon.addEventListener('click', closeProductDetailAside);
 myOrdersList.addEventListener('click', myOrders);
 logoLobby.addEventListener('click', logoLobbyStr);
 window.addEventListener('scroll', adjustAsidePosition);
 littleArrowCarrito.addEventListener('click', littleArrowBack);
+myOrdersMobile.addEventListener('click', () => {
+  containerOrders.classList.remove('inactive');
+  mainContainer.classList.add('inactive');
+  mobileMenu.classList.add('inactive');
+  myAccount.classList.add('inactive');
+  myOrder.classList.add('inactive');
+});
+productDetailCloseIcon.addEventListener('click', () => {
+  productDetailContainer.classList.add('inactive');
+
+  if(window.innerWidth <= 641){
+    body.style.overflowY = 'auto';
+  }
+});
 signIn.addEventListener('click', () => {
   logIn.classList.remove('inactive');
   mainContainer.classList.add('inactive');
@@ -221,6 +245,36 @@ myAccountMenu.addEventListener('click', () => {
   mainContainer.classList.add('inactive');
   desktopMenu.classList.add('inactive');
   shadow.classList.add('inactive');
+})
+myAccountMobile.addEventListener('click', () => {
+  myAccount.classList.remove('inactive');
+  mainContainer.classList.add('inactive');
+  desktopMenu.classList.add('inactive');
+  shadow.classList.add('inactive');
+  mobileMenu.classList.add('inactive');
+  containerOrders.classList.add('inactive');
+})
+loginMobile.addEventListener('click', () => {
+  logIn.classList.remove('inactive');
+  mobileMenu.classList.add('inactive');
+  nav.classList.add('inactive');
+})
+newPasswordButton.addEventListener('click', () => {
+  logIn.classList.remove('inactive');
+  newPassword.classList.add('inactive');
+})
+loginButton.addEventListener('click', () => {
+  nav.classList.remove('inactive');
+  loginMobile.innerText = 'Log out';
+  arrayOfArrays = [];
+  numberCarrito.innerText = 0;
+  logoLobbyStr();
+})
+createAccountButton.addEventListener('click', () => {
+  nav.classList.remove('inactive');
+  logoLobbyStr();
+  loginMobile.innerText = 'Log out';
+  signUp.classList.add('inactive');
 })
 
 
@@ -261,8 +315,29 @@ function toggleMobileMenu() {
     shadow.classList.add('inactive');
   }
 
-  closeProductDetailAside();
+  if(mobileMenu.classList.contains('inactive')){
+    mainContainer.classList.add('inactive');
+  } else {
+    mainContainer.classList.remove('inactive');
+  }
+
+  if(!containerOrders.classList.contains('inactive')){
+    mainContainer.classList.add('inactive');
+  } else {
+    containerOrders.classList.add('inactive');
+  }
+
+  if(!myAccount.classList.contains('inactive')){
+    // myAccount.classList.add('inactive');
+    mainContainer.classList.add('inactive');
+  } 
+
+
+  productDetailContainer.classList.add('inactive');
   mobileMenu.classList.toggle('inactive');
+  if(window.innerWidth <= 641){
+    body.style.overflowY = 'auto';
+  }
 }
 
 function toggleCarritoAside() {
@@ -297,7 +372,18 @@ function toggleCarritoAside() {
   shadow.addEventListener('click', ()=> {
     asideCarrito.classList.add('inactive');
     shadow.classList.add('inactive');
+    // if(window.innerWidth <= 641){
+    // }
+    body.style.overflowY = 'auto';
   })
+
+  // if(window.innerWidth <= 641){
+  body.style.overflow = 'hidden';
+  // }
+
+  if(asideCarrito.classList.contains('inactive')){
+    body.style.overflowY = 'auto';
+  }
 }
 
 function openProductDetailAside(event){
@@ -308,7 +394,6 @@ function openProductDetailAside(event){
 
   asideCarrito.classList.add('inactive');
   desktopMenu.classList.add('inactive');
-
 
   if(product){
     divContainer.classList.add('product-card-addToCar');
@@ -329,10 +414,16 @@ function openProductDetailAside(event){
     productDetailContainer.style.top = navbarHeight + 'px';
     productDetailContainer.classList.toggle('inactive');
     divContainer.querySelector('.add-to-car').addEventListener('click', addProductsToCar);
-
-
+  
     if(!isNavbarVisible){
-    productDetailContainer.style.top = 0;
+      productDetailContainer.style.top = 0;
+    }
+    
+    if(!productDetailContainer.classList.contains('inactive')){
+      if(window.innerWidth <= 641){
+        body.style.overflowY = 'hidden';
+        productDetailContainer.style.overflow = 'auto';
+      }
     }
   }
 }
@@ -341,10 +432,6 @@ function getProductById(productId){
   const product = productList.find(item => item.id == productId);
 
   return product
-}
-
-function closeProductDetailAside(){
-  productDetailContainer.classList.add('inactive');
 }
 
 function checkoutMyOrder(){
@@ -376,7 +463,7 @@ function checkoutMyOrder(){
       </figure>
       <p class="name">${card.name}</p>
       <div>
-        <div>
+        <div class="quantity-content">
           <p>${card.quantity}</p>
         </div>
         <div>
@@ -413,9 +500,23 @@ function checkoutMyOrder(){
   const formattedDate = currentDate.toLocaleDateString(undefined, options);
 
   dateOrder.textContent = formattedDate;
-
   menuCarritoIcon.classList.add('inactive');
   categories.classList.add('inactive');
+  
+  buttonBuy.addEventListener('click', () => {
+    const array = [...arrayOfArrays];
+    purchases.push(array)
+    arrayOfArrays = [];
+    numberCarrito.textContent = arrayOfArrays.length;
+    myCarrito.innerHTML = '';
+
+    // array = [arrayOfArrays];
+    // purchases = [...arrays()];
+
+    console.log(purchases)
+  })
+  myPurchasedProductsMobile.addEventListener('click', myPurchasedProductsList);
+  myPurchasedProducts.addEventListener('click', myPurchasedProductsList);
 }
 
 function myOrders(){
@@ -428,6 +529,29 @@ function myOrders(){
 
   if(menuCarritoIcon.classList.contains('inactive')){
     menuCarritoIcon.classList.remove('inactive');
+  }
+}
+
+function myPurchasedProductsList(e) {
+  // console.log(purchasedProducts);
+  let renderMyOrders = () => {
+    myOrdersContent.innerHTML = '';
+
+    let i = 1;
+    let total = 0;
+
+
+
+    `
+    <div class="orders">
+      <p>
+        <span>03.25.21</span>
+        <span>6 articles</span>
+      </p>
+      <p>$560.00</p>
+      <img src="./icons/flechita.svg" alt="arrow">
+    </div>
+    `;
   }
 }
 
@@ -470,11 +594,18 @@ function logoLobbyStr(){
   logIn.classList.add('inactive');
   categories.classList.remove('inactive');
   menuEmail.classList.remove('inactive');
+  myAccount.classList.add('inactive');
+  if(window.innerWidth <= 641){
+  body.style.overflowY = 'auto';
+  }
 }
 
 function littleArrowBack(){
   shadow.classList.add('inactive');
   asideCarrito.classList.add('inactive');
+  // if(window.innerWidth <= 641){
+  // }
+  body.style.overflowY = 'auto';
 }
 
 function addProductsToCar(event){
@@ -508,16 +639,18 @@ function addProductsToCar(event){
       <p class="name">${card.name}</p>
 
       <div>
-        <form class="quantity-container">
+        <div class="quantity-container">
           <button type="button" class="buttonMinus">
             -
           </button>
           <span class="inactive span">${card.name}</span>
-          <input class="quantity" value="${card.quantity}" min="1">
+          <div class="quantity">
+            <p>${card.quantity}</p>
+          </div>
           <button type="button" class="buttonPlus">
             +
           </button>
-        </form>
+        </div>
         <div>
           <p>${card.quantity}</p>
           <p> x </p>
@@ -545,6 +678,9 @@ function addProductsToCar(event){
   showCarrito.addEventListener('click', () => {
     asideCarrito.classList.remove('inactive');
     shadow.classList.remove('inactive');
+    // if(window.innerWidth <= 641){
+    // }
+    body.style.overflow = 'hidden';  
   })
 
   const productId = event.target;
@@ -556,7 +692,6 @@ function addProductsToCar(event){
     quantity: 1,
     id:1
   };
-
   const price = productCard.querySelector('#priceToAdd').textContent;
   const exits = arrayOfArrays.some(product => product.name === productCardObj.name);
   if(exits){
@@ -564,7 +699,6 @@ function addProductsToCar(event){
       if(product.name === productCardObj.name){
         product.quantity++;
         productCardObj.priceQuiet = price;
-        console.log(product);
         return product
       } else {
         product.id++;
@@ -591,8 +725,8 @@ function addProductsToCar(event){
   let totalPrice = 0;
   myCarrito.querySelectorAll('.shopping-cart').forEach(cart => {
     const price = cart.querySelector('p:nth-child(4)');
-    const priceQuiet = cart.querySelector('div > div > p:nth-child(3)').textContent;
-    let quantity = parseInt(cart.querySelector('.quantity').value);
+    const priceQuiet = cart.querySelector('div > div:nth-child(2) > p:nth-child(3)').textContent;
+    let quantity = parseInt(cart.querySelector('.quantity > p').textContent);
     totalPrice = `$${quantity * parseInt(priceQuiet.slice(1))}`;
 
     price.textContent = totalPrice;
@@ -602,23 +736,23 @@ function addProductsToCar(event){
   shoppingCart.forEach(cart =>{
     cart.addEventListener('click', (e) => {
       const shopping = e.target;
-      let priceQuiet = shopping.closest('.shopping-cart').querySelector('.shopping-cart div > div > p:nth-child(3)').textContent;
+      let priceQuiet = shopping.closest('.shopping-cart').querySelector('.shopping-cart div > div:nth-child(2) > p:nth-child(3)').textContent;
       if(e.target.classList.contains('buttonPlus')){
         let price = shopping.closest('.shopping-cart').querySelector('p:nth-child(4)');
         const buttonPlus = e.target;
         const buttonMinus = e.target.parentElement.querySelector('.buttonMinus');
-        let contadorInput = buttonPlus.parentElement.querySelector('.quantity');
-        contadorInput.value = parseInt(contadorInput.value) + 1;
-        let quantity = parseInt(contadorInput.value);
+        let contador = buttonPlus.parentElement.querySelector('.quantity > p');
+        contador.textContent = parseInt(contador.textContent) + 1;
+        let quantity = parseInt(contador.textContent);
         let total = 0;
         total = `$${quantity * parseInt(priceQuiet.slice(1))}`;
-        if(parseInt(contadorInput.value) <= 1){
+        if(parseInt(contador.textContent) <= 1){
           buttonMinus.disabled = true;
         } else{
           buttonMinus.disabled = false;
         }
 
-        contadorInput.value = quantity;
+        contador.textContent = quantity;
         price.textContent = total;
         totalPriceCar.innerText = total;
 
@@ -650,18 +784,18 @@ function addProductsToCar(event){
       if(e.target.classList.contains('buttonMinus')){
         let price = shopping.closest('.shopping-cart').querySelector('p:nth-child(4)');
         const buttonMinus = e.target;
-        let contadorInput = buttonMinus.parentElement.querySelector('.quantity');
-        contadorInput.value = parseInt(contadorInput.value) - 1;
-        let quantity = parseInt(contadorInput.value);
+        let contador = buttonMinus.parentElement.querySelector('.quantity');
+        contador.textContent = parseInt(contador.textContent) - 1;
+        let quantity = parseInt(contador.textContent);
         let total = 0;
         total = `$${quantity * parseInt(priceQuiet.slice(1))}`;
-        if(parseInt(contadorInput.value) <= 1){
+        if(parseInt(contador.textContent) <= 1){
           buttonMinus.disabled = true;
         } else{
           buttonMinus.disabled = false;
         }
 
-        contadorInput.value = quantity;
+        contador.textContent = quantity;
         price.textContent = total;
         totalPriceCar.innerText = total;
 
@@ -694,7 +828,6 @@ function addProductsToCar(event){
     })
   })
 
-  console.log(arrayOfArrays);
 
   myCarrito.addEventListener('click', (e) => {
     if(e.target.classList.contains('icon-close')){
@@ -712,6 +845,9 @@ function addProductsToCar(event){
     }
   })
 
+  if(window.innerWidth <= 641){
+    body.style.overflowY = 'auto';
+  }
   document.querySelector('.button-checkout').addEventListener('click', checkoutMyOrder);
 }
 
@@ -750,19 +886,17 @@ renderProducts(productList);
 
 function adjustAsidePosition() {
   const isNavbarVisible = navbarLeft.getBoundingClientRect().top >= 0;
+ 
 
-  if (isNavbarVisible) {
-    productDetailContainer.style.top = navbarHeight + 'px';
-  } else {
-    productDetailContainer.style.top = '0';
-  }
+  // if (isNavbarVisible) {
+  //   productDetailContainer.style.top = navbarHeight + 'px';
+  // } else {
+  //   productDetailContainer.style.top = 0;
+  // }
 }
 
 function filterCategories() {
-  const ulElement = navbarLeft.querySelector('ul');
-  const liElements = ulElement.querySelectorAll('li');
-
-  liElements.forEach(li => {
+  navbarLeft.querySelector('ul').querySelectorAll('li').forEach(li => {
     const aElements = li.querySelector('a');
     aElements.addEventListener('click', (event) => {
       const productCards = cardsContainer.querySelectorAll('.product-card');
@@ -774,8 +908,10 @@ function filterCategories() {
 
         if(selectedCategoryId == categoryProduct){
           card.classList.remove('inactive');
+          mobileMenu.classList.add('inactive');
         } else if(selectedCategoryId == 'All'){
           card.classList.remove('inactive');
+          mobileMenu.classList.add('inactive');
         }
       })
 
@@ -799,6 +935,40 @@ function filterCategories() {
       }
     });
   });
+
+  categoryListMobile.querySelectorAll('li').forEach(li => {
+    li.querySelector('a').addEventListener('click', (e) => {
+      const productCards = cardsContainer.querySelectorAll('.product-card');
+      const selectedCategoryId = e.currentTarget.dataset.categoryId;
+      
+      productCards.forEach(card => {
+        const categoryProduct = card.dataset.categoryId;
+        card.classList.add('inactive');
+        
+        if(selectedCategoryId == categoryProduct){
+          card.classList.remove('inactive');
+          mainContainer.classList.remove('inactive');
+          mobileMenu.classList.add('inactive');
+        } else if(selectedCategoryId == 'All'){
+          card.classList.remove('inactive');
+          mainContainer.classList.remove('inactive');
+          mobileMenu.classList.add('inactive');
+        } else if(!containerOrders.classList.contains('inactive')){
+          containerOrders.classList.add('inactive');
+        }
+      })
+
+      myAccount.classList.add('inactive');
+      containerOrders.classList.add('inactive');
+
+      if(!myOrder.classList.contains('inactive')){
+        myOrder.classList.add('inactive');
+        if(window.innerWidth <= 641){
+          body.style.overflow = 'auto';
+        }
+      }
+    })
+  })
 }
 filterCategories();
 
@@ -806,7 +976,7 @@ filterCategories();
 // Dinamizar la section myOrdersComplete
 // Crear section, imagen grande, descripción mediana debajo de la imagen, a la derecha de la imagen el nombre grande, el precio grande, botón para comprar de una vez, botón para añadir a carrito, añadir opción para agregar a favoritos(opcional, añadir imagenes de tarjetas disponibles como método de pago), productos disponibles
 // Cuando le de click a x producto que esté en el Carrito, que habra los detalles del producto en una section
-// Código responsivo
+// In progress - Código responsivo
 // HECHO - Faltaría mirar si se pueden añadir las clases faltantes que son otras páginas que conforman la tienda online
 // HECHO - Si le doy checkout a los productos del carrito que esos productos vayan directo a la section My order en pantalla completa
 // HECHO - El número del carrito sin abrir tiene que ser dinámico
