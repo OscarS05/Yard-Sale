@@ -192,6 +192,32 @@
     </div> -->
   </aside>
 
+  <div class="container-purchased inactive">
+    <div class="confirm-purchase">
+      <figure>
+        <img src="./icons/bt_added_to_cart.svg" alt="check">
+      </figure>
+      <p>Se ha comprado correctamente.</p>
+      <div class="show-purchases">
+        Ver compras
+      </div>
+    </div>
+  </div>
+
+  <section class="view-order inactive">
+    <div class="my-view">
+      <img src="./icons/flechita.svg" alt="little-arrow" class="little-arrow little-arrow-view">
+      
+      <div class="my-view-container">
+        <h1 class="title">My purchase</h1>
+
+        <div class="my-view-content">
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="my-order-complete inactive">
     <div class="my-order">
       <div class="my-order-container">
@@ -235,18 +261,28 @@
   </section>
 
   <section class="my-orders-complete inactive">
-    <div class="my-orders">
-      <div class="my-orders-container">
-        <h1 class="title-orders">My orders</h1>
+    <div class="orders-empty">
+      <div>
+        <img src="https://cdn-icons-png.flaticon.com/512/3366/3366062.png" alt="">
+        <p>¡Empieza un carrito de compras!</p>
+        <p>Suma productos y consigue envíos gratis.</p>
+      </div>
+    </div>
 
-        <div class="my-orders-content">
-          <div class="orders">
-            <p>
-              <span>03.25.21</span>
-              <span>6 articles</span>
-            </p>
-            <p>$560.00</p>
-            <img src="./icons/flechita.svg" alt="arrow">
+    <div class="orders-container inactive">
+      <div class="my-orders">
+        <div class="my-orders-container">
+            <h1 class="title-orders">My orders</h1>
+    
+          <div class="my-orders-content">
+            <div class="orders">
+              <p>
+                <span>03.25.21</span>
+                <span>6 articles</span>
+              </p>
+              <p>$560.00</p>
+              <img src="./icons/flechita.svg" alt="arrow">
+            </div>
           </div>
         </div>
       </div>
@@ -367,20 +403,20 @@
       <div class="form-container">
         <h1 class="signUp-title">My account</h1>
 
-        <form action="/" class="form">
+        <form class="form">
           <div>
             <label for="name" class="label">Name</label>
-            <p class="value">Camila Yokoo</p>
+            <p class="value">Coming soon</p>
 
             <label for="email" class="label">Email</label>
-            <p class="value">camilayokoo@gmail.com</p>
+            <p class="value">comingSoon@gmail.com</p>
 
             <label for="password" class="label">Password</label>
             <p class="value">*********</p>
           </div>
-
-          <input type="submit" value="Edit" class="secondary-button myAccount-button">
         </form>
+        <button class="secondary-button myAccount-button">Edit
+        </button>
       </div>
     </div>
   </section>

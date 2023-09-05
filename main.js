@@ -7,6 +7,7 @@ const productDetailCloseIcon = document.querySelector('.product-detail-close');
 const buttonBuy = document.querySelector('.button-buy');
 const logoLobby = document.querySelector('.logo');
 const myOrdersList = document.querySelector('#myOrders');
+const navbarLeft = document.querySelector('.navbar-left');
 const categoryListMobile = document.querySelector('.category-list-mobile');
 const littleArrowCarrito = document.querySelector('.little-arrow');
 let totalPriceCar = document.querySelector('.total-price-carrito');
@@ -32,6 +33,7 @@ const myPurchasedProducts = document.querySelector('.purchasedProducts');
 const myPurchasedProductsMobile = document.querySelector('.purchased-products-mobile');
 
 
+
 const myCarrito = document.querySelector('.my-carrito');
 const myOrderContent = document.querySelector('.my-order-content');
 const desktopMenu = document.querySelector('.desktop-menu');
@@ -55,6 +57,14 @@ const emailSentContainer = document.querySelector('.containerEmailSent');
 const newPassword = document.querySelector('.container-password');
 const signUp = document.querySelector('.sign-up-container');
 const myAccount = document.querySelector('.myAccount-container');
+const containerPurchased = document.querySelector('.container-purchased');
+const showPurchases = document.querySelector('.show-purchases');
+const viewOrderContainer = document.querySelector('.view-order');
+const viewOrder = document.querySelector('.my-view-container');
+const ordersEmpty = document.querySelector('.orders-empty');
+const ordersContainerInactive = document.querySelector('.orders-container');
+
+
 
 const productList = [];
 let arrayOfArrays = [];
@@ -201,14 +211,15 @@ menuHamIcon.addEventListener('click', toggleMobileMenu);
 menuCarritoIcon.addEventListener('click', toggleCarritoAside);
 myOrdersList.addEventListener('click', myOrders);
 logoLobby.addEventListener('click', logoLobbyStr);
-window.addEventListener('scroll', adjustAsidePosition);
 littleArrowCarrito.addEventListener('click', littleArrowBack);
+showPurchases.addEventListener('click', myPurchasedProductsList);
 myOrdersMobile.addEventListener('click', () => {
   containerOrders.classList.remove('inactive');
   mainContainer.classList.add('inactive');
   mobileMenu.classList.add('inactive');
   myAccount.classList.add('inactive');
   myOrder.classList.add('inactive');
+  ordersEmpty.classList.remove('inactive');
 });
 productDetailCloseIcon.addEventListener('click', () => {
   productDetailContainer.classList.add('inactive');
@@ -227,6 +238,7 @@ signIn.addEventListener('click', () => {
   menuEmail.classList.add('inactive');
   info.classList.remove('inactive');
   logoLobby.style.width = '120px';
+  viewOrderContainer.classList.add('inactive');
 })
 forgotPassword.addEventListener('click', () => {
   logIn.classList.add('inactive');
@@ -245,6 +257,7 @@ myAccountMenu.addEventListener('click', () => {
   mainContainer.classList.add('inactive');
   desktopMenu.classList.add('inactive');
   shadow.classList.add('inactive');
+  viewOrderContainer.classList.add('inactive');
 })
 myAccountMobile.addEventListener('click', () => {
   myAccount.classList.remove('inactive');
@@ -253,11 +266,13 @@ myAccountMobile.addEventListener('click', () => {
   shadow.classList.add('inactive');
   mobileMenu.classList.add('inactive');
   containerOrders.classList.add('inactive');
+  viewOrderContainer.classList.add('inactive');
 })
 loginMobile.addEventListener('click', () => {
   logIn.classList.remove('inactive');
   mobileMenu.classList.add('inactive');
   nav.classList.add('inactive');
+  viewOrderContainer.classList.add('inactive');
 })
 newPasswordButton.addEventListener('click', () => {
   logIn.classList.remove('inactive');
@@ -268,6 +283,7 @@ loginButton.addEventListener('click', () => {
   loginMobile.innerText = 'Log out';
   arrayOfArrays = [];
   numberCarrito.innerText = 0;
+  purchases = [];
   logoLobbyStr();
 })
 createAccountButton.addEventListener('click', () => {
@@ -294,10 +310,16 @@ function toggleDesktopMenu() {
 
   shadow.classList.toggle('inactive');
   desktopMenu.classList.toggle('inactive');
+  body.style.overflowY = 'hidden';
+
+  if(desktopMenu.classList.contains('inactive')){
+    body.style.overflow = 'auto';
+  }
 
   shadow.addEventListener('click', ()=> {
     desktopMenu.classList.add('inactive');
     shadow.classList.add('inactive');
+    body.style.overflow = 'auto';
   })
 }
 
@@ -337,6 +359,14 @@ function toggleMobileMenu() {
   mobileMenu.classList.toggle('inactive');
   if(window.innerWidth <= 641){
     body.style.overflowY = 'auto';
+  }
+
+  if(!myOrder.classList.contains('inactive')){
+    mainContainer.classList.add('inactive');
+  }
+  if(!viewOrderContainer.classList.contains('inactive')){
+    mainContainer.classList.add('inactive');
+    viewOrderContainer.classList.remove('inactive');
   }
 }
 
@@ -387,8 +417,6 @@ function toggleCarritoAside() {
 }
 
 function openProductDetailAside(event){
-  const isNavbarVisible = navbarLeft.getBoundingClientRect().top >= 0;
-
   const productId = event.currentTarget.dataset.productId;
   const product = getProductById(productId);
 
@@ -411,13 +439,8 @@ function openProductDetailAside(event){
     `
     productDetailContainer.setAttribute('data-category-id', product.category);
     productDetailContainer.appendChild(divContainer);
-    productDetailContainer.style.top = navbarHeight + 'px';
     productDetailContainer.classList.toggle('inactive');
     divContainer.querySelector('.add-to-car').addEventListener('click', addProductsToCar);
-  
-    if(!isNavbarVisible){
-      productDetailContainer.style.top = 0;
-    }
     
     if(!productDetailContainer.classList.contains('inactive')){
       if(window.innerWidth <= 641){
@@ -433,6 +456,7 @@ function getProductById(productId){
 
   return product
 }
+
 
 function checkoutMyOrder(){
   myOrder.classList.remove('inactive');
@@ -504,19 +528,40 @@ function checkoutMyOrder(){
   categories.classList.add('inactive');
   
   buttonBuy.addEventListener('click', () => {
-    const array = [...arrayOfArrays];
-    purchases.push(array)
-    arrayOfArrays = [];
-    numberCarrito.textContent = arrayOfArrays.length;
-    myCarrito.innerHTML = '';
+    if(arrayOfArrays.length > 0){
+      const array = [...arrayOfArrays];
+      purchases.push(array)
+      arrayOfArrays = [];
 
-    // array = [arrayOfArrays];
-    // purchases = [...arrays()];
 
-    console.log(purchases)
+      purchases.forEach(array => {
+        let priceSum = 0;
+        array.date = formattedDate
+        array.articles = array.length;
+
+        array.forEach(card => {
+          priceSum += parseInt(card.price.slice(1))
+        })
+        array.priceTotal = `$${priceSum}`;
+      })
+      numberCarrito.textContent = arrayOfArrays.length;
+      myCarrito.innerHTML = '';
+      containerPurchased.classList.remove('inactive');
+
+      setTimeout(() => {
+        containerPurchased.classList.add('inactive');
+      }, 3000);
+
+      myOrder.classList.add('inactive');
+      mainContainer.classList.remove('inactive');
+      menuCarritoIcon.classList.remove('inactive');
+      body.style.overflowY = 'auto';
+    }
   })
+
   myPurchasedProductsMobile.addEventListener('click', myPurchasedProductsList);
   myPurchasedProducts.addEventListener('click', myPurchasedProductsList);
+
 }
 
 function myOrders(){
@@ -530,29 +575,103 @@ function myOrders(){
   if(menuCarritoIcon.classList.contains('inactive')){
     menuCarritoIcon.classList.remove('inactive');
   }
+
+  ordersEmpty.classList.remove('inactive');
 }
 
-function myPurchasedProductsList(e) {
-  // console.log(purchasedProducts);
-  let renderMyOrders = () => {
-    myOrdersContent.innerHTML = '';
+function myPurchasedProductsList() {
+  ordersEmpty.classList.add('inactive');
+  ordersContainerInactive.classList.remove('inactive');
+  viewOrderContainer.classList.add('inactive');
 
-    let i = 1;
-    let total = 0;
-
-
-
-    `
-    <div class="orders">
-      <p>
-        <span>03.25.21</span>
-        <span>6 articles</span>
-      </p>
-      <p>$560.00</p>
-      <img src="./icons/flechita.svg" alt="arrow">
-    </div>
-    `;
+  if(purchases.length < 1){
+    ordersEmpty.classList.remove('inactive');
+    ordersContainerInactive.classList.add('inactive');
   }
+
+  let i = 1;
+  myOrdersContent.innerHTML = '';
+
+  purchases.forEach(purchase => {
+    purchase.orderId = i;
+    const order = document.createElement('div');
+    order.classList.add('orders');
+    order.setAttribute('data-order-id', purchase.orderId)
+
+    order.innerHTML = `
+      <p>
+        <span>${purchase.date}</span>
+        <span>${purchase.articles} articles</span>
+      </p>
+      <p>${purchase.priceTotal}</p>
+      <img src="./icons/flechita.svg" alt="arrow">
+    `;
+
+    myOrdersContent.append(order);
+    i++;
+  })
+
+  myOrder.classList.add('inactive');
+  containerOrders.classList.remove('inactive');
+  mainContainer.classList.add('inactive');
+
+  myOrdersContent.querySelectorAll('.orders').forEach(order => {
+    order.addEventListener('click', (e) => {
+      const orderId = order.getAttribute('data-order-id');
+      const selectedPurchase = purchases.find(purchase => purchase.orderId == orderId);
+
+
+      if(selectedPurchase){
+        containerOrders.classList.add('inactive');
+        viewOrderContainer.classList.remove('inactive');
+        viewOrder.innerHTML = '';
+  
+        const orderView = document.createElement('div');
+        orderView.classList.add('my-view-content');
+        let viewCart = '';
+
+        selectedPurchase.forEach(obj => {
+          viewCart += `
+          <div class="view-cart">
+            <figure>
+              <img src=${obj.image}>
+            </figure>
+            <p class="name">${obj.name}</p>
+            <div>
+              <div class="quantity-content">
+                <p>${obj.quantity}</p>
+              </div>
+              <div>
+                <p>1</p>
+                <p>x</p>
+                <p>${obj.priceQuiet}</p>
+              </div>
+            </div>
+            <p class="price">${obj.price}</p>
+          </div>
+          `;
+        });
+
+        orderView.innerHTML = `        
+        <div class="purchase-summary">
+          <p>
+            <span>${selectedPurchase.date}</span>
+            <span>${selectedPurchase.articles} articles</span>
+          </p>
+          <p>${selectedPurchase.priceTotal}</p>
+        </div>
+        ${viewCart}
+        <h1 class="title">My purchase</h1>
+        `
+        viewOrder.append(orderView);
+      }
+    })
+    document.querySelector('.little-arrow-view').addEventListener('click', () => {
+      viewOrderContainer.classList.add('inactive');
+      ordersContainerInactive.classList.remove('inactive');
+      containerOrders.classList.remove('inactive');
+    })
+  })
 }
 
 function logoLobbyStr(){
@@ -595,6 +714,8 @@ function logoLobbyStr(){
   categories.classList.remove('inactive');
   menuEmail.classList.remove('inactive');
   myAccount.classList.add('inactive');
+  viewOrderContainer.classList.add('inactive');
+
   if(window.innerWidth <= 641){
   body.style.overflowY = 'auto';
   }
@@ -603,10 +724,10 @@ function logoLobbyStr(){
 function littleArrowBack(){
   shadow.classList.add('inactive');
   asideCarrito.classList.add('inactive');
-  // if(window.innerWidth <= 641){
-  // }
   body.style.overflowY = 'auto';
 }
+
+const heightShoppingCart = document.querySelector('.shopping-cart').offsetHeight;
 
 function addProductsToCar(event){
   let notification = () => {
@@ -730,10 +851,18 @@ function addProductsToCar(event){
     totalPrice = `$${quantity * parseInt(priceQuiet.slice(1))}`;
 
     price.textContent = totalPrice;
- })
+  })
+
 
   const shoppingCart = myCarrito.querySelectorAll('.shopping-cart');
   shoppingCart.forEach(cart =>{
+    const counter = cart.querySelector('.quantity p');
+    const buttonMin = cart.querySelector('.buttonMinus')
+    if(parseInt(counter.textContent) <= 1){
+      buttonMin.disabled = true;
+    } else{
+      buttonMin.disabled = false;
+    }
     cart.addEventListener('click', (e) => {
       const shopping = e.target;
       let priceQuiet = shopping.closest('.shopping-cart').querySelector('.shopping-cart div > div:nth-child(2) > p:nth-child(3)').textContent;
@@ -784,7 +913,7 @@ function addProductsToCar(event){
       if(e.target.classList.contains('buttonMinus')){
         let price = shopping.closest('.shopping-cart').querySelector('p:nth-child(4)');
         const buttonMinus = e.target;
-        let contador = buttonMinus.parentElement.querySelector('.quantity');
+        let contador = buttonMinus.parentElement.querySelector('.quantity > p');
         contador.textContent = parseInt(contador.textContent) - 1;
         let quantity = parseInt(contador.textContent);
         let total = 0;
@@ -828,7 +957,6 @@ function addProductsToCar(event){
     })
   })
 
-
   myCarrito.addEventListener('click', (e) => {
     if(e.target.classList.contains('icon-close')){
       const product = e.target.parentElement;
@@ -839,15 +967,24 @@ function addProductsToCar(event){
 
       if(arrayOfArrays.length == 0){
         carEmpty.classList.remove('inactive');
+      } else if(arrayOfArrays.length <= 3){
+        asideCarrito.style.height = 'auto';
       }
 
       numberCarrito.innerText = arrayOfArrays.length;
     }
   })
 
-  if(window.innerWidth <= 641){
-    body.style.overflowY = 'auto';
+  if(arrayOfArrays.length < 4){
+    for (let i = 0; i < arrayOfArrays.length; i++) {
+      asideCarrito.style.height = 'auto';
+      console.log(asideCarrito.offsetHeight)
+    }
+  } else {
+    asideCarrito.style.height = '590px';
+    asideCarrito.style.overflowY = 'auto';
   }
+
   document.querySelector('.button-checkout').addEventListener('click', checkoutMyOrder);
 }
 
@@ -884,17 +1021,6 @@ function renderProducts(arr) {
 }
 renderProducts(productList);
 
-function adjustAsidePosition() {
-  const isNavbarVisible = navbarLeft.getBoundingClientRect().top >= 0;
- 
-
-  // if (isNavbarVisible) {
-  //   productDetailContainer.style.top = navbarHeight + 'px';
-  // } else {
-  //   productDetailContainer.style.top = 0;
-  // }
-}
-
 function filterCategories() {
   navbarLeft.querySelector('ul').querySelectorAll('li').forEach(li => {
     const aElements = li.querySelector('a');
@@ -929,6 +1055,7 @@ function filterCategories() {
       desktopMenu.classList.add('inactive');
       shadow.classList.add('inactive');
       asideCarrito.classList.add('inactive');
+      viewOrderContainer.classList.add('inactive');
 
       if(menuCarritoIcon.classList.contains('inactive')){
         menuCarritoIcon.classList.remove('inactive');
@@ -967,17 +1094,18 @@ function filterCategories() {
           body.style.overflow = 'auto';
         }
       }
+
+      viewOrderContainer.classList.add('inactive');
     })
   })
 }
 filterCategories();
 
 
-// Dinamizar la section myOrdersComplete
-// Crear section, imagen grande, descripción mediana debajo de la imagen, a la derecha de la imagen el nombre grande, el precio grande, botón para comprar de una vez, botón para añadir a carrito, añadir opción para agregar a favoritos(opcional, añadir imagenes de tarjetas disponibles como método de pago), productos disponibles
-// Cuando le de click a x producto que esté en el Carrito, que habra los detalles del producto en una section
-// In progress - Código responsivo
-// HECHO - Faltaría mirar si se pueden añadir las clases faltantes que son otras páginas que conforman la tienda online
+// HECHO - Dinamizar la section myOrdersComplete, que serían los resumenes de las compras hechas
+// HECHO - Nueva section My purchases, para visualizar las compras que he hecho
+// HECHO - Código responsivo
+// HECHO - Se añadieron las clases faltantes que son otras páginas que conforman la tienda online
 // HECHO - Si le doy checkout a los productos del carrito que esos productos vayan directo a la section My order en pantalla completa
 // HECHO - El número del carrito sin abrir tiene que ser dinámico
 // HECHO - Si se repite x producto al añadirlo al carrito, que no se rendericen más shoppingCarts si no que solo aumente el quantity del producto
