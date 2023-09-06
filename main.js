@@ -17,7 +17,7 @@ let numberCarrito = document.querySelector('.navbar-shopping-cart > div:nth-chil
 const dateOrder = document.querySelector('.order-myOrder p > span:nth-child(1)');
 const totalArticles = document.querySelector('.order-myOrder p > span:nth-child(2)');
 const priceOrder = document.querySelector('.order-myOrder p:nth-child(2)');
-const signIn = document.querySelector('#sign-out');
+const logInDesktop = document.querySelector('#log-in-desktop');
 const categories = document.querySelector('.navbar-left div');
 const forgotPassword = document.querySelector('#forgot-password');
 const changePasswordButton = document.querySelector('.emailNewPassword-button');
@@ -228,7 +228,7 @@ productDetailCloseIcon.addEventListener('click', () => {
     body.style.overflowY = 'auto';
   }
 });
-signIn.addEventListener('click', () => {
+logInDesktop.addEventListener('click', () => {
   logIn.classList.remove('inactive');
   mainContainer.classList.add('inactive');
   categories.classList.add('inactive');
@@ -239,6 +239,15 @@ signIn.addEventListener('click', () => {
   info.classList.remove('inactive');
   logoLobby.style.width = '120px';
   viewOrderContainer.classList.add('inactive');
+  ordersEmpty.classList.add('inactive');
+  containerOrders.classList.add('inactive');
+})
+loginMobile.addEventListener('click', () => {
+  logIn.classList.remove('inactive');
+  mobileMenu.classList.add('inactive');
+  nav.classList.add('inactive');
+  viewOrderContainer.classList.add('inactive');
+  myAccount.classList.add('inactive');
 })
 forgotPassword.addEventListener('click', () => {
   logIn.classList.add('inactive');
@@ -258,6 +267,9 @@ myAccountMenu.addEventListener('click', () => {
   desktopMenu.classList.add('inactive');
   shadow.classList.add('inactive');
   viewOrderContainer.classList.add('inactive');
+  ordersEmpty.classList.add('inactive');
+  myOrder.classList.add('inactive');
+  containerOrders.classList.add('inactive');
 })
 myAccountMobile.addEventListener('click', () => {
   myAccount.classList.remove('inactive');
@@ -268,12 +280,6 @@ myAccountMobile.addEventListener('click', () => {
   containerOrders.classList.add('inactive');
   viewOrderContainer.classList.add('inactive');
 })
-loginMobile.addEventListener('click', () => {
-  logIn.classList.remove('inactive');
-  mobileMenu.classList.add('inactive');
-  nav.classList.add('inactive');
-  viewOrderContainer.classList.add('inactive');
-})
 newPasswordButton.addEventListener('click', () => {
   logIn.classList.remove('inactive');
   newPassword.classList.add('inactive');
@@ -281,6 +287,7 @@ newPasswordButton.addEventListener('click', () => {
 loginButton.addEventListener('click', () => {
   nav.classList.remove('inactive');
   loginMobile.innerText = 'Log out';
+  logInDesktop.innerText = 'Log out';
   arrayOfArrays = [];
   numberCarrito.innerText = 0;
   purchases = [];
@@ -290,6 +297,7 @@ createAccountButton.addEventListener('click', () => {
   nav.classList.remove('inactive');
   logoLobbyStr();
   loginMobile.innerText = 'Log out';
+  logInDesktop.innerText = 'Log out';
   signUp.classList.add('inactive');
 })
 
@@ -321,6 +329,11 @@ function toggleDesktopMenu() {
     shadow.classList.add('inactive');
     body.style.overflow = 'auto';
   })
+
+  if(!myOrder.classList.contains('inactive')){
+    shadow.classList.add('inactive');
+    desktopMenu.classList.add('inactive');
+  }
 }
 
 function toggleMobileMenu() {
@@ -457,8 +470,10 @@ function getProductById(productId){
   return product
 }
 
-
 function checkoutMyOrder(){
+  if(arrayOfArrays.length > 4){
+    body.style.overflowY = 'auto';
+  }
   myOrder.classList.remove('inactive');
   containerOrders.classList.add('inactive');
   const isShadowInactive = shadow.classList.contains('inactive');
@@ -545,6 +560,8 @@ function checkoutMyOrder(){
         array.priceTotal = `$${priceSum}`;
       })
       numberCarrito.textContent = arrayOfArrays.length;
+      totalPriceCar.textContent = `$${arrayOfArrays.length}`;
+      carEmpty.classList.remove('inactive');
       myCarrito.innerHTML = '';
       containerPurchased.classList.remove('inactive');
 
@@ -555,6 +572,8 @@ function checkoutMyOrder(){
       myOrder.classList.add('inactive');
       mainContainer.classList.remove('inactive');
       menuCarritoIcon.classList.remove('inactive');
+      categories.classList.remove('inactive');
+      asideCarrito.style.height = '323px';
       body.style.overflowY = 'auto';
     }
   })
@@ -571,6 +590,7 @@ function myOrders(){
   mainContainer.classList.add('inactive');
   desktopMenu.classList.add('inactive');
   productDetailContainer.classList.add('inactive');
+  myAccount.classList.add('inactive');
 
   if(menuCarritoIcon.classList.contains('inactive')){
     menuCarritoIcon.classList.remove('inactive');
@@ -587,6 +607,8 @@ function myPurchasedProductsList() {
   if(purchases.length < 1){
     ordersEmpty.classList.remove('inactive');
     ordersContainerInactive.classList.add('inactive');
+  } else if(purchases.length > 6){
+    body.style.overflowY = 'auto';
   }
 
   let i = 1;
@@ -715,10 +737,7 @@ function logoLobbyStr(){
   menuEmail.classList.remove('inactive');
   myAccount.classList.add('inactive');
   viewOrderContainer.classList.add('inactive');
-
-  if(window.innerWidth <= 641){
   body.style.overflowY = 'auto';
-  }
 }
 
 function littleArrowBack(){
@@ -726,8 +745,6 @@ function littleArrowBack(){
   asideCarrito.classList.add('inactive');
   body.style.overflowY = 'auto';
 }
-
-const heightShoppingCart = document.querySelector('.shopping-cart').offsetHeight;
 
 function addProductsToCar(event){
   let notification = () => {
@@ -978,7 +995,6 @@ function addProductsToCar(event){
   if(arrayOfArrays.length < 4){
     for (let i = 0; i < arrayOfArrays.length; i++) {
       asideCarrito.style.height = 'auto';
-      console.log(asideCarrito.offsetHeight)
     }
   } else {
     asideCarrito.style.height = '590px';
@@ -1102,6 +1118,13 @@ function filterCategories() {
 filterCategories();
 
 
+
+// HECHO - Si estoy en my orders, my order, my account o en sign out y doy click en el logo, entonces que se active el scroll y.
+// HECHO - Si estoy en viewPurchase y doy click en myAccount, se cierre viewPurchases
+// HECHO - Si compro un producto que vuelvan a aparecer las categorias
+// HECHO - Log in en vez de sign out y si inicio sesion que aparezca log out
+// HECHO - Si compro un producto que vuelva a aparecer el bonito aviso y se reinicie el precio total del carrito
+// HECHO - Añadir scroll en myViewPurchase and myOrder si hay más de 4 productos diferentes
 // HECHO - Dinamizar la section myOrdersComplete, que serían los resumenes de las compras hechas
 // HECHO - Nueva section My purchases, para visualizar las compras que he hecho
 // HECHO - Código responsivo
